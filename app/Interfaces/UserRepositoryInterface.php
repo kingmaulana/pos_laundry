@@ -13,4 +13,6 @@ interface UserRepositoryInterface
     public function getById(
         string $id
     );
+
+    public function create(array $data);
 }

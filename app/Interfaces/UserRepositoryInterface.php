@@ -9,4 +9,8 @@ interface UserRepositoryInterface
         ?int $limit,
         bool $execute
     );
+
+    public function getById(
+        string $id
+    );
 }

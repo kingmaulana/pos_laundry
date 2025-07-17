@@ -25,4 +25,10 @@ class UserRepository implements UserRepositoryInterface
 
         return $query;
     }
+
+    public function getById(string $id)
+    {
+        $query = User::where('id', $id);
+        return $query->first();
+    }
 }

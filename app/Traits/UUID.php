@@ -7,7 +7,7 @@ trait UUID
 {
     protected static function boot() 
     {
-        parent::boot;
+        parent::boot();
         static::creating(function ($model) {
             if($model->getKey() === null) {
                 $model->setAttribute($model->getKeyName(), Str::uuid()->toString());

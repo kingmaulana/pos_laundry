@@ -78,7 +78,7 @@ class PaketController extends Controller
                 return ResponseHelper::jsonResponse(false, 'Data paket tidak ditemukan.', null, 404);
             }
             $paket = $this->paketRepository->update($id, $request);
-            
+
             return ResponseHelper::jsonResponse(true, 'Data paket berhasil diubah.', new PaketResource($paket), 200);
         } catch (\Exception $e) {
             return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
@@ -90,6 +90,16 @@ class PaketController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $paket = $this->paketRepository->getById($id);
+            if (!$paket) {
+                return ResponseHelper::jsonResponse(false, 'Data paket tidak ditemukan.', null, 404);
+            }
+
+            $paket = $this->paketRepository->delete($id);
+            return ResponseHelper::jsonResponse(true, 'Data paket berhasil dihapus.', null, 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 }

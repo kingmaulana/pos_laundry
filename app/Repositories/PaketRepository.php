@@ -72,4 +72,22 @@ class PaketRepository implements PaketRepositoryInterface
             throw new \Exception($e->getMessage());
         }
     }
+
+    public function delete(string $id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $paket = Paket::find($id);
+            if (!$paket) {
+                throw new \Exception('Paket not found');
+            }
+            $paket->delete();
+            DB::commit();
+            return $paket;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage());
+        }
+    }
 }

@@ -16,7 +16,7 @@ class PaketResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'nama' => $this->nama_paket,
+            'nama' => $this->nama,
             'deskripsi' => $this->deskripsi,
             'tgl' => $this->tgl,
             'harga' => $this->harga,

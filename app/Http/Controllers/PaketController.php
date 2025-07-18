@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\PaketStoreRequest;
 use App\Http\Resources\PaketResource;
 use App\Interfaces\PaketRepositoryInterface;
 use App\Models\Paket;
@@ -12,8 +13,7 @@ class PaketController extends Controller
 {
     private PaketRepositoryInterface $paketRepository;
 
-    public function __construct(PaketRepositoryInterface $paketRepository)
-    {
+    public function __construct(PaketRepositoryInterface $paketRepository) {
         $this->paketRepository = $paketRepository;
     }
     /**
@@ -36,9 +36,16 @@ class PaketController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PaketStoreRequest $request)
     {
-        //
+        $request = $request->validated();
+
+        try {
+            $paket = $this->paketRepository->create($request);
+            return ResponseHelper::jsonResponse(true, 'Data paket berhasil ditambahkan.', new PaketResource($paket), 201);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**
@@ -46,7 +53,15 @@ class PaketController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $paket = $this->paketRepository->getById($id);
+            if (!$paket) {
+                return ResponseHelper::jsonResponse(false, 'Data paket tidak ditemukan.', null, 404);
+            }
+            return ResponseHelper::jsonResponse(true, 'Data paket berhasil diambil.', new PaketResource($paket), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, 'Data paket gagal diambil.', null, 500);
+        }
     }
 
     /**

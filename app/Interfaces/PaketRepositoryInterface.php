@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface UserRepositoryInterface
+interface PaketRepositoryInterface
 {
     public function getAll(
         ?string $search,
@@ -16,7 +16,7 @@ interface UserRepositoryInterface
 
     public function create(array $data);
 
-    public function update(string $id, array $data);
+    // public function update(string $id, array $data);
 
-    public function delete(string $id);
+    // public function delete(string $id);
 }

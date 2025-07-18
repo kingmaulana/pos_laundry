@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\PaketStoreRequest;
+use App\Http\Requests\PaketUpdateRequest;
 use App\Http\Resources\PaketResource;
 use App\Interfaces\PaketRepositoryInterface;
 use App\Models\Paket;
@@ -67,9 +68,21 @@ class PaketController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PaketUpdateRequest $request, string $id)
     {
-        //
+        $request = $request->validated();
+
+        try {
+            $paket = $this->paketRepository->getById($id);
+            if (!$paket) {
+                return ResponseHelper::jsonResponse(false, 'Data paket tidak ditemukan.', null, 404);
+            }
+            $paket = $this->paketRepository->update($id, $request);
+            
+            return ResponseHelper::jsonResponse(true, 'Data paket berhasil diubah.', new PaketResource($paket), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**

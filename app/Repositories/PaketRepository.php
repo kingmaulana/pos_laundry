@@ -53,4 +53,23 @@ class PaketRepository implements PaketRepositoryInterface
             throw new \Exception($e->getMessage());
         }
     }
+
+    public function update(string $id, array $data)
+    {
+        DB::beginTransaction();
+
+        try {
+            $paket = Paket::find($id);
+            $paket->nama = $data['nama'];
+            $paket->deskripsi = $data['deskripsi'];
+            $paket->harga = $data['harga'];
+            $paket->tgl = $data['tgl'];
+            $paket->save();
+            DB::commit();
+            return $paket;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage());
+        }
+    }
 }

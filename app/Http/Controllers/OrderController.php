@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\OrderStoreRequest;
 use App\Http\Resources\OrderResource;
 use App\Interfaces\OrderRepositoryInterface;
 use Illuminate\Http\Request;
@@ -31,9 +32,16 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(OrderStoreRequest $request)
     {
-        //
+        $request = $request->validated();
+
+        try {
+            $paket = $this->orderRepository->create($request);
+            return ResponseHelper::jsonResponse(true, 'Data order berhasil ditambahkan.', new OrderResource($paket), 201);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**

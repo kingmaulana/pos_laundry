@@ -11,6 +11,8 @@ class Order extends Model
     use SoftDeletes, UUID;
 
     protected $fillable = [
+        'user_id',
+        'paket_id',
         'status',
         'tgl',
         'berat',

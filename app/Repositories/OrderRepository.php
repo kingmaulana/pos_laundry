@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Interfaces\OrderRepositoryInterface;
 use App\Models\Order;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class OrderRepository implements OrderRepositoryInterface
 {
@@ -30,5 +32,26 @@ class OrderRepository implements OrderRepositoryInterface
     {
         $query = Order::where('id', $id);
         return $query->first();
+    }
+
+    public function create(array $data)
+    {
+        DB::beginTransaction();
+        try {
+            $order = Order::create($data);
+            $order->user_id = $data['user_id'];
+            $order->paket_id = $data['paket_id'];
+            $order->status = $data['status'];
+            $order->tgl = $data['tgl'];
+            $order->berat = $data['berat'];
+            $order->total_harga = $data['total_harga'];
+
+            $order->save();
+            DB::commit();
+            return $order;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
+        }
     }
 }

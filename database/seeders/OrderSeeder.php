@@ -12,7 +12,7 @@ class OrderSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     */
+    */
     public function run(): void
     {
         UserFactory::new()->count(5)->create()->each(function ($user){

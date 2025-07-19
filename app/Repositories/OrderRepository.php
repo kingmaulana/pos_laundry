@@ -25,4 +25,10 @@ class OrderRepository implements OrderRepositoryInterface
 
         return $query;
     }
+
+    public function getById(string $id)
+    {
+        $query = Order::where('id', $id);
+        return $query->first();
+    }
 }

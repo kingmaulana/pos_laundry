@@ -17,12 +17,12 @@ class Order extends Model
         'total_harga'
     ];
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function pakets()
+    public function paket()
     {
         return $this->belongsTo(Paket::class);
     }

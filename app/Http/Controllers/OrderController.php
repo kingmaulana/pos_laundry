@@ -41,7 +41,15 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $order = $this->orderRepository->getById($id);
+            if (!$order) {
+                return ResponseHelper::jsonResponse(false, 'Data Order tidak ditemukan', null, 404);
+            }
+            return ResponseHelper::jsonResponse(true, 'Data Order Berhasil Diambil', new OrderResource($order), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**

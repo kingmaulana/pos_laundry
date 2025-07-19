@@ -9,4 +9,8 @@ interface OrderRepositoryInterface
         ?int $limit,
         bool $execute
     );
+
+    public function getById(string $id);
+
+    
 }

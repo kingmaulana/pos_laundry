@@ -54,4 +54,27 @@ class OrderRepository implements OrderRepositoryInterface
             throw new Exception($e->getMessage());
         }
     }
+
+    public function update(string $id, array $data)
+    {
+        DB::beginTransaction();
+
+        try {
+            $order = Order::find($id);
+            $order->user_id = $data['user_id'];
+            $order->paket_id = $data['paket_id'];
+            $order->status = $data['status'];
+            $order->tgl = $data['tgl'];
+            $order->berat = $data['berat'];
+            $order->total_harga = $data['total_harga'];
+            $order->save();
+
+            $order->update($data);
+            DB::commit();
+            return $order;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception($e->getMessage());
+        }
+    }
 }

@@ -14,4 +14,6 @@ interface OrderRepositoryInterface
 
     public function create(array $data);
 
+    public function update(string $id, array $data);
+
 }

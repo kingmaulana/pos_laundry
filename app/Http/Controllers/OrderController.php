@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\OrderStoreRequest;
+use App\Http\Requests\OrderUpdateRequest;
 use App\Http\Resources\OrderResource;
 use App\Interfaces\OrderRepositoryInterface;
 use Illuminate\Http\Request;
@@ -63,9 +64,21 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(OrderUpdateRequest $request, string $id)
     {
-        //
+        $request = $request->validated();
+
+        try {
+            $order = $this->orderRepository->getById($id);
+            if (!$order) {
+                return ResponseHelper::jsonResponse(false, 'Data Order tidak ditemukan.', null, 404);
+            }
+            $order = $this->orderRepository->update($id, $request);
+
+            return ResponseHelper::jsonResponse(true, 'Data Order berhasil diubah.', new OrderResource($order), 200);
+        } catch (\Exception $e) {
+            return ResponseHelper::jsonResponse(false, $e->getMessage(), null, 500);
+        }
     }
 
     /**

@@ -17,7 +17,7 @@ class PaketFactory extends Factory
     public function definition(): array
     {
         return [
-            'nama' => fake()->name(),
+            'nama' => fake()->randomElement(['Paket Miskin', 'Paket KPR', 'Paket Gaya Elit', 'Paket Ekonomi Syulit', 'Paket Mewah']),
             'deskripsi' => fake()->text(),
             'harga' => fake()->randomNumber(5, true),
             'tgl' => fake()->date('mY-m-d'),
